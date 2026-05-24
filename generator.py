@@ -241,3 +241,53 @@ def generate_incidents(from_date: date, to_date: date) -> list[dict]:
                         "Lost Time Injury","Spill","Emission Breach"] else 0,
                 })
     return rows
+
+def generate_master_rigs() -> list[dict]:
+    import random
+    rng = random.Random(42)
+    rig_types = ["Land Rig", "Offshore Platform", "Jack-up Rig"]
+    rows = []
+    for rig_id, region in REGIONS.items():
+        rows.append({
+            "rig_id":          rig_id,
+            "rig_name":        f"Rig {rig_id.split('-')[1]}",
+            "region":          region,
+            "rig_type":        rng.choice(rig_types),
+            "commission_year": RIG_COMMISSION[rig_id],
+        })
+    return rows
+
+def generate_master_crew() -> list[dict]:
+    import random
+    rng = random.Random(42)
+    roles       = ["Driller", "Toolpusher", "Mud Engineer",
+                   "Derrickman", "Roughneck", "HSE Officer"]
+    cert_levels = ["Level 1", "Level 2", "Level 3"]
+    rows = []
+    for region, crew_list in CREW_IDS.items():
+        for crew_id in crew_list:
+            rows.append({
+                "crew_id":             crew_id,
+                "role":                rng.choice(roles),
+                "certification_level": rng.choice(cert_levels),
+                "years_experience":    rng.randint(1, 25),
+                "region":              region,
+            })
+    return rows
+
+def generate_master_regions() -> list[dict]:
+    region_details = {
+        "Permian":    {"basin": "Permian Basin",      "state": "Texas"},
+        "Eagle Ford": {"basin": "Western Gulf Basin",  "state": "Texas"},
+        "Bakken":     {"basin": "Williston Basin",     "state": "North Dakota"},
+        "Marcellus":  {"basin": "Appalachian Basin",   "state": "Pennsylvania"},
+        "Gulf":       {"basin": "Gulf of Mexico",      "state": "Louisiana"},
+    }
+    rows = []
+    for region_name, details in region_details.items():
+        rows.append({
+            "region_name": region_name,
+            "basin":       details["basin"],
+            "state":       details["state"],
+        })
+    return rows

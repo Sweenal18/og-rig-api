@@ -122,3 +122,35 @@ def incidents(
         from_date=str(from_date),
         **paged,
     )
+
+@app.get("/master/rigs")
+def master_rigs():
+    from generator import generate_master_rigs
+    data = generate_master_rigs()
+    return {
+        "endpoint":    "master_rigs",
+        "total_records": len(data),
+        "data":        data,
+    }
+
+
+@app.get("/master/crew")
+def master_crew():
+    from generator import generate_master_crew
+    data = generate_master_crew()
+    return {
+        "endpoint":    "master_crew",
+        "total_records": len(data),
+        "data":        data,
+    }
+
+
+@app.get("/master/regions")
+def master_regions():
+    from generator import generate_master_regions
+    data = generate_master_regions()
+    return {
+        "endpoint":    "master_regions",
+        "total_records": len(data),
+        "data":        data,
+    }
